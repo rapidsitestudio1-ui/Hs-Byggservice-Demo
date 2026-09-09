@@ -1,0 +1,14 @@
+{
+  "name": "hs-byggservice",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Statisk webbplats for HS Byggservice",
+  "scripts": {
+    "images": "node scripts/optimize-images.mjs",
+    "serve": "node scripts/serve.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.2"
+  }
+}
