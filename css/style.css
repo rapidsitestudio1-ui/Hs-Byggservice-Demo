@@ -325,9 +325,9 @@ button { font: inherit; color: inherit; background: none; border: 0; }
 .hero__copy { position: relative; }
 
 .hero__title {
-  font-size: 96px;
-  line-height: 105.6px;
-  letter-spacing: -2.4px;
+  font-size: 88px;
+  line-height: 97px;
+  letter-spacing: -2.2px;
   color: #fff;
 }
 .hero__line { display: block; }
@@ -337,12 +337,14 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   position: absolute;
   top: 3px;
   right: 0;
-  width: 407px;
-  /* 14/27 håller ingressen på tre rader i den 407 px breda spalten, så att
-     sista raden inte blir ett ensamt ord. Mindre skärmar återställs nedan. */
-  font-size: 14px;
-  line-height: 27px;
-  text-align: right;
+  /* 440 px rymmer ingressen på tre rader utan ensamt slutord, och den
+     nedtrappade rubriken (88 px) lämnar plats för luft mellan de två. */
+  width: 440px;
+  font-size: 15.5px;
+  line-height: 30px;
+  /* Vänsterställd så att alla rader börjar på samma linje, med jämn luft
+     mot rubriken. */
+  text-align: left;
   color: rgba(255, 255, 255, .85);
 }
 
@@ -820,13 +822,17 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   grid-template-columns: 2fr 1fr 1fr 2fr;
   gap: 48px var(--gap);
 }
-.footer__text { margin-top: 22px; max-width: 395px; line-height: 27.9px; }
+/* Luft mellan varumärkestexten och länkkolumnen bredvid. */
+.footer__brand { padding-right: 40px; }
+.footer__text { margin-top: 22px; max-width: 380px; line-height: 27.9px; }
 
-.socials { display: flex; gap: 6px; margin-top: 30px; }
+/* Negativ marginal drar den runda ytan åt vänster så att själva ikonen
+   linjerar med texten ovanför. */
+.socials { display: flex; gap: 6px; margin: 26px 0 0 -10px; }
 .social {
   display: grid;
   place-items: center;
-  width: 40px; height: 40px;
+  width: 44px; height: 44px;
   border-radius: 50%;
   color: rgba(255, 255, 255, .8);
   transition: background-color var(--t), color var(--t);
@@ -1115,7 +1121,9 @@ a.contact-card__value:hover { color: #fff; text-decoration: underline; text-unde
   .projects { grid-auto-columns: calc(((100% - var(--gap)) / 2) * .94); }
 
   .footer__grid { grid-template-columns: 1fr 1fr; gap: 44px 32px; }
-  .footer__brand { grid-column: 1 / -1; }
+  /* Varumärkeskolumnen går över hela bredden här och behöver ingen extra
+     högermarginal mot länkkolumnen. */
+  .footer__brand { grid-column: 1 / -1; padding-right: 0; }
 }
 
 /* Surfplatta stående + mobilmeny */
