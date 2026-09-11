@@ -63,35 +63,48 @@ Justera listan `JOBS` i `scripts/optimize-images.mjs` när bilder byts ut.
 Färger, typografi och mått är hämtade från Figma-underlaget och ligger som
 CSS-variabler överst i `css/style.css`.
 
+Accentfärgen är orange. Den bär CTA:er, ikoner, länkar, hovringar, dekorlinjer
+och små grafiska detaljer — allt annat är neutralt (vitt, off-white, grått,
+koltonat mörkt). Vill du byta accent räcker det att ändra `--accent` och de
+fyra nyanserna under den; ingen komponent har hårdkodad orange.
+
 | Token | Värde | Används till |
 |---|---|---|
-| `--green` | `#2e473d` | Hero, omdömen, sidfot |
-| `--sage` | `#7c815d` | Dekorativa ytor: toningar, ikoner, logotyp |
-| `--sage-text` | `#575c3e` | Sage som text (klarar WCAG AA) |
-| `--sage-btn` | `#6f7452` | Knappytor med vit text (klarar WCAG AA) |
-| `--sand` | `#a39c72` | Dekorativa accenter: ikoner, logotypmärke |
-| `--sand-light` | `#bdb795` | Sand som text på mörk botten (klarar WCAG AA) |
+| `--accent` | `#f5641e` | Primär accent: ikoner, dekorlinjer, ifyllda märken, fokusring på mörkt |
+| `--accent-strong` | `#cb4909` | Knappytor, FAQ-flikar, löptextens list, fokusring på ljust (vit text 4,67:1) |
+| `--accent-deep` | `#a63b07` | Knapphovring + accent som text: etiketter, aktiv meny (6,46:1 mot vitt, 4,63:1 mot `--mist`) |
+| `--accent-light` | `#ff8a4c` | Accent som text på mörk botten (6,57:1 mot `--dark`) |
+| `--accent-soft` | `#fde8dc` | Svag orange yta: ikoncirklar i arbetsgång och "varför oss" |
+| `--accent-tint` | `#fdf7f3` | Mycket svag orange bakgrund: öppet dragspel |
+| `--dark` | `#23252a` | Hero, omdömen, kontakt, sidfot |
+| `--dark-panel` | `#2c2f35` | Formulärpanelen inuti den mörka sektionen |
 | `--ink` | `#242422` | Rubriker |
 | `--body` | `#505050` | Brödtext |
-| `--mist` | `#d8dacf` | Bakgrund i före/efter-sektionen |
-| `--pill` | `#e5e6df` | Ikoncirklar |
+| `--mist` | `#dddad5` | Bakgrund i före/efter-sektionen |
+| `--pill` | `#e7e4df` | Neutral platshållaryta bakom tjänstekortens bilder |
 
 Innehållsbredd 1280 px, kolumnavstånd 28,8 px, hörnradie 30 px, sektionsavstånd
 100 px — samtliga direkt från Figma.
 
 **Avvikelser från Figma, med anledning:**
 
-- Sage används i två nyanser för text respektive knappytor. Originalfärgen
-  `#7c815d` ger 4,07:1 mot vitt och klarar inte WCAG AA för text. Den behålls
-  oförändrad för dekorativa ytor.
-- Löptextens list är marginellt mörkare (`#8f9375`) och växlar mellan vit och
-  djupgrön text i stället för vit och genomskinlig vit. Den ursprungliga
-  tonningen gav 1,7:1 och var oläsbar.
+- **Accenten är orange, inte Figmas salvia/sand.** `#f5641e` ger bara 3,12:1
+  mot vitt och duger därför till ikoner och dekor (kravet är 3:1) men inte till
+  text eller knapptext. Därför finns `--accent-strong` för knappytor och
+  `--accent-deep` för accent som text — samma uppdelning som underlaget hade
+  för salvia. Grundvärdet `#f5641e` används oförändrat där kontrastkravet är 3:1.
+- **Mörka ytor är koltonade, inte gröna.** Hero, omdömen, kontakt och sidfot
+  använder `--dark` `#23252a` så att orange blir webbplatsens enda varumärkesfärg.
+  `--mist` och `--pill` är av samma skäl varmt neutrala i stället för olivtonade.
+- Löptextens list använder `--accent-strong` och växlar mellan vit och mörk
+  text i stället för vit och genomskinlig vit. Den ursprungliga tonningen gav
+  1,7:1 och var oläsbar. Den djupare orangen valdes framför `--accent` så att
+  bandet läser premium snarare än skrikigt över full bredd.
 - Menypunkten "Pages" är ersatt med "Om oss" och rullgardinspilarna är borttagna,
   eftersom webbplatsen är en sida med ankarnavigering.
 - Nyckeltalsraden i hero visar tjänstelöften i stället för siffror. Se nedan.
-- Sand finns i två nyanser. `#a39c72` som text på mörkgrönt ger 3,62:1 och klarar
-  inte AA, så etiketter på mörk botten använder den ljusare varianten.
+- Accenten finns i en ljusare nyans för mörk botten. `--accent-light`
+  `#ff8a4c` ger 6,57:1 mot `--dark`, så etiketter på mörk botten använder den.
 - **Kantiga hörn:** alla knappar och knappliknande ytor (huvud-CTA, FAQ-flikar,
   dragspel, karusellknappar, formulärfält och skicka-knapp) samt projektkorten
   har raka hörn, enligt önskemål om att följa hero-knappens form. Bildkort,
@@ -182,7 +195,7 @@ Sektionen `#kontakt` bygger på Figma-komponenten `244:3605`. Layouten är
 densamma — rubrik och kontaktuppgifter till vänster, formulärpanel till höger —
 men **textfärgerna är omgjorda**: i underlaget var etiketterna mörkgrå på mörk
 botten och i praktiken osynliga. Nu är etiketter vita, värden ljusa och
-etikettraden använder `--sand-light`. Alla kombinationer klarar WCAG AA.
+etikettraden använder `--accent-light`. Alla kombinationer klarar WCAG AA.
 
 Formuläret är också målet för alla "Begär offert"-knappar (`#kontakt` pekar nu
 på formuläret i stället för på sidfoten).

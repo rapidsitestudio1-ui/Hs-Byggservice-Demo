@@ -35,19 +35,28 @@
 
 /* ---------------------------- Tokens ---------------------------- */
 :root {
-  --green: #2e473d;
-  --sage: #7c815d;          /* dekorativa ytor: toningar, ikoner, logotyp */
-  --sage-text: #575c3e;     /* sage som TEXT — 6,99:1 mot vitt, 4,94:1 mot --mist */
-  --sage-btn: #6f7452;      /* sage som KNAPPYTA — vit text ger 4,89:1 */
-  --sage-dark: #5d6242;     /* hover pa knappytor */
-  --sage-bar: #8f9375;      /* loptextens list — vit och djupgron text klarar 3:1 */
-  --sand: #a39c72;          /* dekorativa accenter: ikoner, logotypmarke */
-  --sand-light: #bdb795;    /* sand som TEXT pa morkt — 4,97:1 mot --green */
+  /* --- Accent: orange varumarkesaccent ---------------------------
+     --accent ar grundvardet. Ovriga nyanser finns enbart for att varje
+     roll ska klara WCAG AA — andra --accent forst och lat de andra
+     folja. Uppmatta kontrastvarden star i kommentarerna. */
+  --accent: #f5641e;         /* primar accent: ikoner, linjer, dekor, ytor */
+  --accent-strong: #cb4909;  /* accent som KNAPPYTA — vit text ger 4,67:1 */
+  --accent-deep: #a63b07;    /* hover pa knappytor + accent som TEXT — 6,46:1 mot vitt, 4,63:1 mot --mist */
+  --accent-light: #ff8a4c;   /* accent som TEXT pa morkt — 6,57:1 mot --dark */
+  --accent-soft: #fde8dc;    /* svag orange yta: ikoncirklar */
+  --accent-tint: #fdf7f3;    /* mycket svag orange bakgrund: oppet dragspel */
+  --accent-rgb: 245, 100, 30;
+  --accent-strong-rgb: 203, 73, 9;
+
+  /* --- Neutraler ------------------------------------------------- */
+  --dark: #23252a;           /* Hero, omdomen, kontakt, sidfot */
+  --dark-rgb: 35, 37, 42;
+  --dark-panel: #2c2f35;     /* formularpanelen inuti den morka sektionen */
   --ink: #242422;
   --body: #505050;
   --off: #f8f9fa;
-  --mist: #d8dacf;
-  --pill: #e5e6df;
+  --mist: #dddad5;
+  --pill: #e7e4df;
   --line: #ddd;
 
   --shell: 1280px;
@@ -92,13 +101,15 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; }
 
 :where(a, button, input, [tabindex]):focus-visible {
-  outline: 3px solid var(--sage);
+  outline: 3px solid var(--accent-strong);
   outline-offset: 3px;
   border-radius: 2px;
 }
+/* Pa mork botten byts ringen mot ljusare accent — 4,91:1 mot --dark. */
 .hero :focus-visible,
 .footer :focus-visible,
-.quotes :focus-visible { outline-color: var(--sand); }
+.quotes :focus-visible,
+.contact :focus-visible { outline-color: var(--accent); }
 
 .visually-hidden {
   position: absolute !important;
@@ -116,7 +127,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   transform: translate(-50%, -140%);
   z-index: 200;
   padding: 12px 24px;
-  background: var(--green);
+  background: var(--dark);
   color: #fff;
   font-weight: 600;
   transition: transform .2s var(--ease);
@@ -152,7 +163,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   font-weight: 700;
   letter-spacing: 5px;
   text-transform: uppercase;
-  color: var(--sage-text);
+  color: var(--accent-deep);
 }
 
 .h2 {
@@ -176,8 +187,8 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   text-align: center;
   transition: background-color var(--t), color var(--t), transform var(--t);
 }
-.btn--primary { background: var(--sage-btn); color: #fff; }
-.btn--primary:hover { background: var(--sage-dark); }
+.btn--primary { background: var(--accent-strong); color: #fff; }
+.btn--primary:hover { background: var(--accent-deep); }
 .btn--primary:active { transform: translateY(1px); }
 
 /* -------------------------- Varumärke -------------------------- */
@@ -187,7 +198,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   gap: 10px;
   color: var(--ink);
 }
-.brand__mark { color: var(--sage); flex: none; }
+.brand__mark { color: var(--accent); flex: none; }
 .brand__name {
   font-size: 26px;
   line-height: 1;
@@ -196,7 +207,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   white-space: nowrap;
 }
 .brand--light { color: #fff; }
-.brand--light .brand__mark { color: var(--sand); }
+.brand--light .brand__mark { color: var(--accent); }
 
 /* -------------------------- Sidhuvud -------------------------- */
 .site-header {
@@ -241,15 +252,15 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   position: absolute;
   left: 0; bottom: 0;
   width: 100%; height: 2px;
-  background: var(--sage);
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--t);
 }
-.nav__link:hover { color: var(--sage-text); }
+.nav__link:hover { color: var(--accent-deep); }
 .nav__link:hover::after,
 .nav__link.is-current::after { transform: scaleX(1); }
-.nav__link.is-current { color: var(--sage-text); }
+.nav__link.is-current { color: var(--accent-deep); }
 
 .nav-toggle {
   display: none;
@@ -295,22 +306,22 @@ button { font: inherit; color: inherit; background: none; border: 0; }
 .hero {
   position: relative;
   isolation: isolate;
-  background: var(--green);
+  background: var(--dark);
   color: #fff;
   overflow: hidden;
 }
 .hero__media { position: absolute; inset: 0; z-index: -2; }
 .hero__media img { width: 100%; height: 100%; object-fit: cover; object-position: 32% 58%; }
 
-/* Grön ton + vertikal och horisontell toning, som i Figma */
+/* Mörk ton + vertikal och horisontell toning, som i Figma */
 .hero__veil {
   position: absolute;
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(to top, var(--green) 2%, rgba(46, 71, 61, 0) 42%),
-    linear-gradient(to right, rgba(46, 71, 61, 0) 26%, rgba(46, 71, 61, .58) 62%, var(--green) 100%),
-    rgba(46, 71, 61, .36);
+    linear-gradient(to top, var(--dark) 2%, rgba(var(--dark-rgb), 0) 42%),
+    linear-gradient(to right, rgba(var(--dark-rgb), 0) 26%, rgba(var(--dark-rgb), .58) 62%, var(--dark) 100%),
+    rgba(var(--dark-rgb), .36);
 }
 
 .hero__shell {
@@ -361,7 +372,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   gap: 16px;
   min-height: 66px;
 }
-.stat__icon { flex: none; color: var(--sage); }
+.stat__icon { flex: none; color: var(--accent); }
 .stat__text { display: block; }
 .stat__value {
   display: block;
@@ -380,7 +391,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
 
 
 /* ------------------------ Förtroenderad ------------------------
-   Följer nyckeltalen i hero: ikon i sage, värde i Poppins Bold 32,
+   Följer nyckeltalen i hero: ikon i accent, värde i Poppins Bold 32,
    etikett i brödtextstorlek. Ligger som ett eget band mellan hero
    och tjänsterna.
    ---------------------------------------------------------------- */
@@ -402,7 +413,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   text-align: center;
 }
 .trust__item + .trust__item { border-left: 1px solid rgba(36, 36, 34, .11); }
-.trust__icon { color: var(--sage); margin-bottom: 6px; }
+.trust__icon { color: var(--accent); margin-bottom: 6px; }
 .trust__value {
   font-size: 32px;
   line-height: 38px;
@@ -450,7 +461,13 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   position: absolute;
   left: 0; right: 0; bottom: 0;
   height: 70%;
-  background: linear-gradient(to top, var(--sage) 0%, rgba(124, 129, 93, 0) 100%);
+  /* Orange ar betydligt mer mattad an underlagets salvia. En rak ombytning
+     hade lagt tre stora orangea block i tjanstelistan, sa glodet ar delat:
+     en svag mork slöja bar titeln (vit text ~5:1) och ovanpa den ligger
+     sjalva accenttoningen dampad. Samma geometri som forut. */
+  background:
+    linear-gradient(to top, rgba(var(--accent-strong-rgb), .55) 0%, rgba(var(--accent-strong-rgb), 0) 65%),
+    linear-gradient(to top, rgba(var(--dark-rgb), .82) 0%, rgba(var(--dark-rgb), 0) 92%);
   pointer-events: none;
 }
 .service-card__icon {
@@ -499,8 +516,8 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   width: 66px; height: 66px;
   margin: 0 auto 22px;
   border-radius: 50%;
-  background: var(--pill);
-  color: var(--sage);
+  background: var(--accent-soft);
+  color: var(--accent-deep);
 }
 .step__title {
   margin-bottom: 8px;
@@ -515,7 +532,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   position: relative;
   isolation: isolate;
   padding: 100px 0 90px;
-  background: var(--green);
+  background: var(--dark);
   color: #fff;
   overflow: hidden;
 }
@@ -526,7 +543,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(to bottom, rgba(46, 71, 61, .82) 0%, rgba(46, 71, 61, .92) 46%, var(--green) 58%);
+    linear-gradient(to bottom, rgba(var(--dark-rgb), .82) 0%, rgba(var(--dark-rgb), .92) 46%, var(--dark) 58%);
 }
 
 /* Arbetsområdesblocket i den mörka sektionen */
@@ -594,8 +611,8 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   flex: none;
   width: 52px; height: 52px;
   border-radius: 50%;
-  background: var(--pill);
-  color: var(--sage);
+  background: var(--accent-soft);
+  color: var(--accent-deep);
 }
 .reason__title {
   margin-bottom: 6px;
@@ -611,7 +628,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   overflow: hidden;
   border-radius: var(--radius);
   aspect-ratio: 16 / 9;
-  background: var(--green);
+  background: var(--dark);
   touch-action: pan-y;
   user-select: none;
 }
@@ -663,7 +680,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: #fff;
-  color: var(--green);
+  color: var(--accent-strong);
   box-shadow: 0 4px 14px rgba(0, 0, 0, .25);
 }
 .compare__range {
@@ -678,7 +695,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
 }
 .compare__range::-webkit-slider-thumb { -webkit-appearance: none; width: 46px; height: 100%; }
 .compare__range::-moz-range-thumb { width: 46px; height: 200px; border: 0; opacity: 0; }
-.compare__range:focus-visible ~ .compare__handle .compare__knob { outline: 3px solid var(--sage); outline-offset: 3px; }
+.compare__range:focus-visible ~ .compare__handle .compare__knob { outline: 3px solid var(--accent); outline-offset: 3px; }
 
 /* ---------------------------- Projekt ---------------------------- */
 .carousel-nav { display: flex; gap: 8px; padding-bottom: 6px; }
@@ -686,12 +703,12 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   display: grid;
   place-items: center;
   width: 34px; height: 34px;
-  background: var(--sage-btn);
+  background: var(--accent-strong);
   color: #fff;
   cursor: pointer;
   transition: background-color var(--t), opacity var(--t);
 }
-.carousel-nav__btn:hover { background: var(--sage-dark); }
+.carousel-nav__btn:hover { background: var(--accent-deep); }
 .carousel-nav__btn[disabled] { opacity: .35; cursor: default; }
 
 .projects {
@@ -741,7 +758,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
 }
 .faq__tab:hover { color: var(--ink); }
 .faq__tab.is-active {
-  background: var(--sage-btn);
+  background: var(--accent-strong);
   color: #fff;
   font-weight: 600;
 }
@@ -765,16 +782,16 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   cursor: pointer;
   transition: border-color var(--t), background-color var(--t);
 }
-.acc__btn:hover { border-color: var(--sage); }
+.acc__btn:hover { border-color: var(--accent); }
 .acc__btn[aria-expanded='true'] {
-  border-color: var(--sage);
-  background: #fbfbf9;
+  border-color: var(--accent);
+  background: var(--accent-tint);
 }
 .acc__chev {
   flex: none;
   width: 14px; height: 14px;
-  border-right: 2px solid var(--green);
-  border-bottom: 2px solid var(--green);
+  border-right: 2px solid var(--accent-strong);
+  border-bottom: 2px solid var(--accent-strong);
   margin-top: -5px;
   transform: rotate(45deg);
   transition: transform var(--t);
@@ -787,7 +804,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
 /* ---------------------------- Löptext ---------------------------- */
 .marquee {
   overflow: hidden;
-  background: var(--sage-bar);
+  background: var(--accent-strong);
   padding: 18px 0;
 }
 .marquee__track {
@@ -802,7 +819,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   line-height: 50px;
   font-weight: 700;
   letter-spacing: -.9px;
-  color: var(--green);
+  color: var(--dark);
   white-space: nowrap;
 }
 .marquee__item:nth-child(even) { color: #fff; }
@@ -814,7 +831,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
 /* ----------------------------- Sidfot ----------------------------- */
 .footer {
   padding-top: 100px;
-  background: var(--green);
+  background: var(--dark);
   color: rgba(255, 255, 255, .8);
 }
 .footer__grid {
@@ -862,7 +879,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   font-weight: 700;
   color: #fff;
 }
-.contact-item__icon { display: grid; place-items: center; color: var(--sand); }
+.contact-item__icon { display: grid; place-items: center; color: var(--accent); }
 .contact-item__value { display: block; line-height: 30px; transition: color var(--t); }
 a.contact-item__value:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
 
@@ -889,7 +906,7 @@ a.contact-item__value:hover { color: #fff; text-decoration: underline; text-unde
 /* ------------------------ Kontaktformulär ------------------------ */
 .contact {
   padding: var(--section-pt) 0;
-  background: var(--green);
+  background: var(--dark);
   color: rgba(255, 255, 255, .82);
 }
 .contact__grid {
@@ -899,7 +916,7 @@ a.contact-item__value:hover { color: #fff; text-decoration: underline; text-unde
   align-items: start;
 }
 
-.eyebrow--light { color: var(--sand-light); }
+.eyebrow--light { color: var(--accent-light); }
 .h2--light { color: #fff; }
 
 .contact__intro .h2 { margin-bottom: 25px; }
@@ -922,7 +939,7 @@ a.contact-item__value:hover { color: #fff; text-decoration: underline; text-unde
   flex: none;
   width: 53px; height: 53px;
   border-radius: 50%;
-  background: var(--sage);
+  background: var(--accent);
   color: #fff;
 }
 .contact-card__body { min-width: 0; }
@@ -946,7 +963,7 @@ a.contact-card__value:hover { color: #fff; text-decoration: underline; text-unde
 /* Panelen */
 .contact__panel {
   padding: 40px;
-  background: #263b33;
+  background: var(--dark-panel);
   border: 1px solid rgba(255, 255, 255, .09);
 }
 
@@ -970,7 +987,7 @@ a.contact-card__value:hover { color: #fff; text-decoration: underline; text-unde
   color: #fff;
 }
 .field__label abbr {
-  color: var(--sand-light);
+  color: var(--accent-light);
   text-decoration: none;
   border: 0;
 }
@@ -991,10 +1008,10 @@ a.contact-card__value:hover { color: #fff; text-decoration: underline; text-unde
 }
 .field__input--area { min-height: 118px; resize: vertical; }
 .field__input::placeholder { color: #6b6b66; opacity: 1; }
-.field__input:hover { border-color: var(--sage); }
+.field__input:hover { border-color: var(--accent); }
 .field__input:focus {
-  border-color: var(--sand);
-  box-shadow: 0 0 0 3px rgba(163, 156, 114, .35);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .35);
   outline: none;
 }
 .field__input[aria-invalid='true'] {
