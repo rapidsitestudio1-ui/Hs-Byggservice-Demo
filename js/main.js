@@ -1,6 +1,6 @@
 /* =============================================================
-   HS Byggservice — interaktion
-   Ingen ramverkskod, inga externa beroenden.
+   Summit Roofing — interaction
+   No framework code, no external dependencies.
    ============================================================= */
 (() => {
   'use strict';
@@ -9,11 +9,11 @@
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ===================== Årtal i sidfoten ===================== */
+  /* ===================== Year in the footer ===================== */
   const arEl = $('#ar');
   if (arEl) arEl.textContent = String(new Date().getFullYear());
 
-  /* ===================== Mobilmeny ===================== */
+  /* ===================== Mobile menu ===================== */
   (() => {
     const toggle = $('.nav-toggle');
     const nav = $('#huvudmeny');
@@ -28,7 +28,7 @@
       toggle.setAttribute('aria-expanded', String(open));
       nav.classList.toggle('is-open', open);
       scrim.hidden = !open;
-      // Låt scrim få en frame innan opaciteten animeras.
+      // Give the scrim a frame before animating opacity.
       if (open) requestAnimationFrame(() => scrim.classList.add('is-open'));
       else scrim.classList.remove('is-open');
       document.body.style.overflow = open ? 'hidden' : '';
@@ -56,11 +56,11 @@
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
 
-    // Återställ menyn när vi går tillbaka till desktopbredd.
+    // Reset the menu when we return to desktop width.
     mq.addEventListener('change', (e) => { if (!e.matches && open) setOpen(false); });
   })();
 
-  /* ===================== Sidhuvudets skuggläge ===================== */
+  /* ===================== Header shadow state ===================== */
   (() => {
     const header = $('.site-header');
     if (!header) return;
@@ -74,7 +74,7 @@
     ).observe(sentinel);
   })();
 
-  /* ===================== Aktiv länk i menyn ===================== */
+  /* ===================== Active nav link ===================== */
   (() => {
     const links = $$('.nav__link[href^="#"]');
     if (!links.length) return;
@@ -96,7 +96,7 @@
     map.forEach((_, target) => observer.observe(target));
   })();
 
-  /* ===================== Före / efter ===================== */
+  /* ===================== Before / after ===================== */
   (() => {
     const wrap = $('#compare');
     const range = $('#compare-range');
@@ -105,7 +105,7 @@
     const apply = () => wrap.style.setProperty('--split', `${range.value}%`);
     range.addEventListener('input', apply);
 
-    // Klick och drag var som helst i bilden flyttar reglaget.
+    // Click or drag anywhere in the image moves the slider.
     const fromPointer = (clientX) => {
       const r = wrap.getBoundingClientRect();
       const pct = ((clientX - r.left) / r.width) * 100;
@@ -116,13 +116,13 @@
     wrap.addEventListener('pointerdown', (e) => { dragging = true; fromPointer(e.clientX); });
     window.addEventListener('pointermove', (e) => { if (dragging) fromPointer(e.clientX); });
     window.addEventListener('pointerup', () => { dragging = false; });
-    // Avbruten gest (t.ex. systemgest på mobil) ska också släppa reglaget.
+    // An aborted gesture (e.g. a system gesture on mobile) must release the slider too.
     window.addEventListener('pointercancel', () => { dragging = false; });
 
     apply();
   })();
 
-  /* ===================== Projektkarusell ===================== */
+  /* ===================== Project carousel ===================== */
   (() => {
     const track = $('#projekt-track');
     if (!track) return;
@@ -153,7 +153,7 @@
     update();
   })();
 
-  /* ===================== FAQ — flikar ===================== */
+  /* ===================== FAQ — tabs ===================== */
   (() => {
     const tabs = $$('.faq__tab');
     if (!tabs.length) return;
@@ -184,14 +184,14 @@
     });
   })();
 
-  /* ===================== FAQ — dragspel ===================== */
+  /* ===================== FAQ — accordion ===================== */
   (() => {
     const buttons = $$('.acc__btn');
     if (!buttons.length) return;
 
-    // Pågående animation per panel. Utan detta hinner en stängning som
-    // avbryts av en ny öppning ändå köra sin onfinish och dölja panelen,
-    // så att aria-expanded="true" pekar på något osynligt.
+    // Track the running animation per panel. Without this, a close that is
+    // interrupted by a new open still fires its onfinish and hides the panel,
+    // leaving aria-expanded="true" pointing at something invisible.
     const pagaende = new WeakMap();
     const avbryt = (panel) => {
       const anim = pagaende.get(panel);
@@ -231,14 +231,14 @@
 
     buttons.forEach((btn) => btn.addEventListener('click', () => {
       const isOpen = btn.getAttribute('aria-expanded') === 'true';
-      // Håll ett svar öppet i taget inom samma flik.
+      // Keep one answer open at a time within the same tab.
       const group = btn.closest('.faq__panel');
       if (group) $$('.acc__btn', group).forEach((other) => { if (other !== btn) close(other); });
       isOpen ? close(btn) : open(btn);
     }));
   })();
 
-  /* ===================== Offertformulär ===================== */
+  /* ===================== Quote form ===================== */
   (() => {
     const form = $('#offertformular');
     if (!form) return;
@@ -249,23 +249,23 @@
 
     const REGLER = {
       namn: (v) => {
-        if (!v.trim()) return 'Fyll i ditt namn.';
-        if (v.trim().length < 2) return 'Namnet verkar för kort.';
+        if (!v.trim()) return 'Please enter your name.';
+        if (v.trim().length < 2) return 'That name looks too short.';
         return '';
       },
       epost: (v) => {
-        if (!v.trim()) return 'Fyll i din e-postadress.';
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())) return 'Kontrollera e-postadressen, den ser inte komplett ut.';
+        if (!v.trim()) return 'Please enter your email address.';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())) return 'Check the email address — it does not look complete.';
         return '';
       },
       telefon: (v) => {
-        if (!v.trim()) return '';                       // frivilligt
-        if (!/^[+(\d][\d\s()-]{5,}$/.test(v.trim())) return 'Kontrollera telefonnumret.';
+        if (!v.trim()) return '';                       // optional
+        if (!/^[+(\d][\d\s()-]{5,}$/.test(v.trim())) return 'Check the phone number.';
         return '';
       },
       meddelande: (v) => {
-        if (!v.trim()) return 'Skriv några rader om ditt projekt.';
-        if (v.trim().length < 10) return 'Berätta gärna lite mer, minst tio tecken.';
+        if (!v.trim()) return 'Tell us a little about your roof.';
+        if (v.trim().length < 10) return 'A bit more detail please — at least ten characters.';
         return '';
       }
     };
@@ -291,7 +291,7 @@
       return visaFel(el, REGLER[namn](el.value));
     };
 
-    // Validera vid blur, och rensa felet så fort användaren rättar sig.
+    // Validate on blur, and clear the error as soon as the user corrects it.
     Object.keys(REGLER).forEach((namn) => {
       const el = faltet(namn);
       if (!el) return;
@@ -308,11 +308,11 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if (sending) return;                              // skyddar mot dubbla utskick
+      if (sending) return;                              // guards against double submits
 
       const trasiga = Object.keys(REGLER).filter((n) => !kontrollera(n));
       if (trasiga.length) {
-        sattStatus('Kontrollera de markerade fälten.', 'fel');
+        sattStatus('Please check the highlighted fields.', 'fel');
         faltet(trasiga[0]).focus();
         return;
       }
@@ -320,11 +320,11 @@
       sending = true;
       submit.disabled = true;
       const etikett = submit.textContent;
-      submit.textContent = 'Skickar …';
+      submit.textContent = 'Sending …';
       sattStatus('');
 
       try {
-        // Utan tidsgräns kan knappen fastna i "Skickar …" om nätet tystnar.
+        // Without a timeout the button can stick on "Sending …" if the network dies.
         const avbrytare = new AbortController();
         const klocka = setTimeout(() => avbrytare.abort(), 15000);
         const svar = await fetch(form.getAttribute('action') || '/', {
@@ -335,13 +335,13 @@
         }).finally(() => clearTimeout(klocka));
         if (!svar.ok) throw new Error('HTTP ' + svar.status);
 
-        // Ersätt formuläret med en tydlig kvittens.
+        // Replace the form with a clear confirmation.
         const klar = document.createElement('div');
         klar.className = 'form__done';
         klar.innerHTML =
-          '<h3>Tack för din förfrågan!</h3>' +
-          '<p>Vi har tagit emot ditt meddelande och hör av oss så snart vi kan. ' +
-          'Är det bråttom får du gärna ringa oss direkt.</p>';
+          '<h3>Thanks — we have got it.</h3>' +
+          '<p>Your message is in and we will get back to you as soon as we can. ' +
+          'If the roof is actively leaking, call us instead and we will come out.</p>';
         form.replaceWith(klar);
         klar.setAttribute('tabindex', '-1');
         klar.focus({ preventScroll: true });
@@ -349,7 +349,7 @@
         sending = false;
         submit.disabled = false;
         submit.textContent = etikett;
-        sattStatus('Meddelandet kunde inte skickas just nu. Ring 072 861 61 87 eller mejla HSbyggservice@hotmail.com så hjälper vi dig.', 'fel');
+        sattStatus('That message could not be sent right now. Call (555) 014-8200 or email info@summitroofing.example and we will help you.', 'fel');
       }
     });
   })();
