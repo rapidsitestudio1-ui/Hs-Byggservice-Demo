@@ -25,9 +25,14 @@
 [[headers]]
   for = "/css/*"
   [headers.values]
-    Cache-Control = "public, max-age=604800"
+    # Stilmallen har inget innehallshash i filnamnet, sa en blind cache pa en
+    # vecka gor att aterkommande besokare far en gammal design. Netlify skickar
+    # ETag: med must-revalidate fragar webblasaren varje gang och far 304 om
+    # inget andrats — nastan ingen trafik, men andringar syns direkt.
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "/js/*"
   [headers.values]
-    Cache-Control = "public, max-age=604800"
+    # Samma skal som for /css/* ovan.
+    Cache-Control = "public, max-age=0, must-revalidate"
