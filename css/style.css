@@ -156,7 +156,13 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   gap: 32px;
 }
 
+/* A short accent rule before the label. It inherits currentColor, so it is
+   the deep orange on light sections and the light orange on dark ones
+   without a second rule. */
 .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin: 8px 0 20px;
   font-size: 11.625px;
   line-height: 17.438px;
@@ -165,6 +171,15 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   text-transform: uppercase;
   color: var(--accent-deep);
 }
+.eyebrow::before {
+  content: '';
+  flex: none;
+  width: 26px; height: 2px;
+  background: currentColor;
+}
+/* Centred heads need the rule and the label centred together. */
+.section__head--center .eyebrow,
+.callout .eyebrow { justify-content: center; }
 
 .h2 {
   font-size: 45px;
@@ -209,15 +224,23 @@ button { font: inherit; color: inherit; background: none; border: 0; }
 .brand--light { color: #fff; }
 .brand--light .brand__mark { color: var(--accent); }
 
-/* -------------------------- Sidhuvud -------------------------- */
+/* -------------------------- Header --------------------------
+   The header is charcoal, so at the top of the page it melts into the hero
+   and the two read as one dark block. Once it sticks over the white sections
+   below, the shadow and hairline give it back its edge. */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #fff;
+  background: var(--dark);
   transition: box-shadow var(--t);
 }
-.site-header.is-stuck { box-shadow: 0 1px 0 rgba(36, 36, 34, .08), 0 8px 24px rgba(36, 36, 34, .06); }
+.site-header.is-stuck {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .07), 0 10px 30px rgba(0, 0, 0, .34);
+}
+/* Header sits on dark, so it takes the on-dark focus ring, not the light one. */
+.site-header :focus-visible { outline-color: var(--accent); }
+.site-header .brand { color: #fff; }
 
 .site-header__inner {
   display: flex;
@@ -244,7 +267,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   font-size: 15px;
   line-height: 30px;
   font-weight: 600;
-  color: var(--ink);
+  color: rgba(255, 255, 255, .88);
   transition: color var(--t);
 }
 .nav__link::after {
@@ -257,10 +280,12 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   transform-origin: left;
   transition: transform var(--t);
 }
-.nav__link:hover { color: var(--accent-deep); }
+/* --accent rather than --accent-deep: on charcoal the deep shade drops to
+   3,3:1, the bright accent gives 4,91:1. */
+.nav__link:hover { color: var(--accent); }
 .nav__link:hover::after,
 .nav__link.is-current::after { transform: scaleX(1); }
-.nav__link.is-current { color: var(--accent-deep); }
+.nav__link.is-current { color: var(--accent); }
 
 .nav-toggle {
   display: none;
@@ -269,7 +294,7 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   padding: 8px 4px;
   font-size: 15px;
   font-weight: 600;
-  color: var(--ink);
+  color: #fff;
   cursor: pointer;
 }
 .nav-toggle__box {
@@ -282,15 +307,15 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   position: absolute;
   left: 0;
   width: 22px; height: 2px;
-  background: var(--ink);
+  background: #fff;
   transition: transform var(--t), opacity .15s linear, top var(--t);
 }
 .nav-toggle__bar { top: 7px; }
 .nav-toggle__bar::before { content: ''; top: -7px; }
 .nav-toggle__bar::after { content: ''; top: 7px; }
 [aria-expanded='true'] .nav-toggle__bar { background: transparent; }
-[aria-expanded='true'] .nav-toggle__bar::before { top: 0; transform: rotate(45deg); background: var(--ink); }
-[aria-expanded='true'] .nav-toggle__bar::after { top: 0; transform: rotate(-45deg); background: var(--ink); }
+[aria-expanded='true'] .nav-toggle__bar::before { top: 0; transform: rotate(45deg); background: #fff; }
+[aria-expanded='true'] .nav-toggle__bar::after { top: 0; transform: rotate(-45deg); background: #fff; }
 
 .nav-scrim {
   position: fixed;
@@ -466,6 +491,11 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   border-radius: var(--radius);
   aspect-ratio: 1;
   background: var(--pill);
+  transition: transform var(--t), box-shadow var(--t);
+}
+.service-card__link:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 44px rgba(var(--dark-rgb), .20);
 }
 .service-card__img {
   width: 100%; height: 100%;
@@ -578,7 +608,18 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   color: rgba(255, 255, 255, .82);
 }
 
-/* ---------------------------- Om oss ---------------------------- */
+/* ---------------------------- About ----------------------------
+   The about block gets a faint warm ground so the page is not an unbroken
+   run of white between the dark bands, plus a soft accent bloom behind the
+   copy. It needs its own bottom padding: .section only pads the top, and
+   without it the tint would stop flush against the last button. */
+#om-oss {
+  padding-bottom: var(--section-pt);
+  background:
+    radial-gradient(64% 86% at 86% 16%, rgba(var(--accent-rgb), .11) 0%, rgba(var(--accent-rgb), 0) 62%),
+    var(--accent-tint);
+}
+
 .about {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -922,8 +963,14 @@ a.contact-item__value:hover { color: #fff; text-decoration: underline; text-unde
 
 /* ------------------------ Kontaktformulär ------------------------ */
 .contact {
+  position: relative;
+  isolation: isolate;
   padding: var(--section-pt) 0;
-  background: var(--dark);
+  /* A bloom behind the heading echoes the hero glow and stops the last dark
+     band reading as a flat slab. Kept faint: white still clears 13:1 on it. */
+  background:
+    radial-gradient(52% 70% at 8% 14%, rgba(var(--accent-rgb), .13) 0%, rgba(var(--accent-rgb), 0) 62%),
+    var(--dark);
   color: rgba(255, 255, 255, .82);
 }
 .contact__grid {
@@ -1174,8 +1221,11 @@ a.contact-card__value:hover { color: #fff; text-decoration: underline; text-unde
     gap: 0;
     width: min(340px, 86vw);
     padding: 104px 28px 40px;
-    background: #fff;
-    box-shadow: -20px 0 60px rgba(36, 36, 34, .16);
+    /* --dark, not --dark-panel: on the lighter panel shade the current link's
+       orange drops to 4,30:1, under AA. On --dark it is 4,91:1, and the
+       drawer matches the header bar it slides out from. */
+    background: var(--dark);
+    box-shadow: -20px 0 60px rgba(0, 0, 0, .5);
     transform: translateX(100%);
     transition: transform .32s var(--ease);
     overflow-y: auto;
@@ -1184,7 +1234,7 @@ a.contact-card__value:hover { color: #fff; text-decoration: underline; text-unde
   .nav.is-open { transform: translateX(0); visibility: visible; }
 
   .nav__list { flex-direction: column; align-items: stretch; gap: 0; }
-  .nav__list li + li { border-top: 1px solid #eee; }
+  .nav__list li + li { border-top: 1px solid rgba(255, 255, 255, .1); }
   .nav__link {
     display: block;
     padding: 15px 0;
