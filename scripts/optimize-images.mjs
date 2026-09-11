@@ -13,11 +13,13 @@ const OUT = 'assets/img';
 
 /** width = bredd i CSS-pixlar som filen ar avsedd for */
 const JOBS = [
-  // Hero (LCP) — AI-genererad bild i webbplatsens fargskala
-  // Bilden speglas sa att fasaden hamnar till vanster, dar rubriken star,
-  // och den grona toningen till hoger faller over himmel och tallar.
-  { src: 'hero.png',       name: 'hero',        widths: [960, 1440, 1920], fit: 'cover', ratio: 1920 / 800, q: { avif: 46, webp: 62, jpg: 70 },
-    pre: (img) => img.flop().extract({ left: 0, top: 250, width: 2752, height: 1147 }) },
+  // Hero (LCP) — AI-generated roofline at golden hour, in the site's palette:
+  // charcoal shingles on the left where the headline sits, warm amber sky on
+  // the right under the veil. Source is 3840x1648 (21:9), close enough to the
+  // 2.4:1 target that a centred cover crop only trims top and bottom, so no
+  // pre-step is needed. Downsampling from 4k keeps the shingle texture crisp.
+  { src: 'hero-roof.png',  name: 'hero',        widths: [960, 1440, 1920], fit: 'cover', ratio: 1920 / 800, q: { avif: 46, webp: 62, jpg: 70 },
+    pre: (img) => img },
 
   // Tjanstekort — kvadratiska
   { src: 'svc-kok.png',    name: 'tjanst-kok',  widths: [416, 832], fit: 'cover', ratio: 1,   q: { avif: 48, webp: 66, jpg: 72 } },

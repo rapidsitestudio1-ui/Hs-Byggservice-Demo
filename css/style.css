@@ -311,16 +311,33 @@ button { font: inherit; color: inherit; background: none; border: 0; }
   overflow: hidden;
 }
 .hero__media { position: absolute; inset: 0; z-index: -2; }
-.hero__media img { width: 100%; height: 100%; object-fit: cover; object-position: 32% 58%; }
+/* The roofline photo is 2.4:1 and the hero box is wider than it is tall, so
+   cover crops horizontally. Anchoring right keeps the ridge sweeping through
+   the frame and the sunset glow in view; the old 32% framing was cut for the
+   previous photo and clipped the sky off entirely. */
+.hero__media img { width: 100%; height: 100%; object-fit: cover; object-position: 100% 50%; }
 
-/* Mörk ton + vertikal och horisontell toning, som i Figma */
+/* Hero veil — four layers, listed top-most first.
+   The accent wash sits UNDER the two dark fades on purpose: over the top it
+   would tint the dark right edge and the footer of the frame muddy brown.
+   Underneath, it only warms the exposed image, and the fades still darken
+   cleanly where the lead paragraph and the stats row need a solid ground. */
 .hero__veil {
   position: absolute;
   inset: 0;
   z-index: -1;
   background:
+    /* bottom fade — carries the stats row */
     linear-gradient(to top, var(--dark) 2%, rgba(var(--dark-rgb), 0) 42%),
+    /* right fade — carries the lead paragraph */
     linear-gradient(to right, rgba(var(--dark-rgb), 0) 26%, rgba(var(--dark-rgb), .58) 62%, var(--dark) 100%),
+    /* soft orange glow, centred on the horizon light in the photograph so it
+       amplifies the sun that is already there instead of tinting the frame.
+       A flat wash was tried first and turned the whole hero sepia — the roof
+       has to stay charcoal for the accent to read as an accent. */
+    radial-gradient(88% 74% at 59% 70%, rgba(var(--accent-rgb), .30) 0%, rgba(var(--accent-rgb), .12) 40%, rgba(var(--accent-rgb), 0) 72%),
+    /* barely-there warm lift, ties the top of the frame to the glow below */
+    linear-gradient(180deg, rgba(var(--accent-rgb), .04) 0%, rgba(var(--accent-rgb), .08) 100%),
     rgba(var(--dark-rgb), .36);
 }
 
@@ -1188,6 +1205,10 @@ a.contact-card__value:hover { color: #fff; text-decoration: underline; text-unde
      så att det inte uppstår en tom yta där raden tidigare låg. */
   .stats { display: none; }
   .hero__shell { padding-top: 116px; padding-bottom: 88px; }
+  /* A narrow, tall hero box crops roughly two thirds off a 2.4:1 photo. Held
+     at the right edge the crop lands on open sky and the roof disappears, so
+     phones pull the framing back toward the ridge. */
+  .hero__media img { object-position: 55% 50%; }
   .hero__lead { max-width: 34ch; }
   .hero__title { font-size: clamp(38px, 10.4vw, 52px); line-height: 1.1; letter-spacing: -1.1px; }
   .hero__lead { font-size: 15px; line-height: 28px; margin-top: 20px; }
